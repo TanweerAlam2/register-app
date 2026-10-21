@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent { label 'Jenkins-Agent' }
 
@@ -23,14 +24,33 @@ pipeline {
 
         stage('Build Application') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn -B clean package'
             }
         }
 
         stage('Test Application') {
             steps {
-                sh 'mvn test'
+                sh 'mvn -B test'
             }
         }
     }
+
+    post {
+        always {
+            junit testResults: '**/target/surefire-reports/*.xml',
+                  allowEmptyResults: true
+
+            archiveArtifacts artifacts: '**/target/*.jar, **/target/*.war',
+                             allowEmptyArchive: true
+        }
+
+        success {
+            echo 'Build and test pipeline completed successfully.'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check the stage logs for the error.'
+        }
+    }
 }
+```
