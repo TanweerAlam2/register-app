@@ -1,4 +1,3 @@
-groovy
 pipeline {
     agent { label 'Jenkins-Agent' }
 
@@ -22,15 +21,9 @@ pipeline {
             }
         }
 
-        stage('Build Application') {
+        stage('Build and Test') {
             steps {
-                sh 'mvn -B clean package'
-            }
-        }
-
-        stage('Test Application') {
-            steps {
-                sh 'mvn -B test'
+                sh 'mvn -B clean verify'
             }
         }
     }
@@ -45,11 +38,11 @@ pipeline {
         }
 
         success {
-            echo 'Build and test pipeline completed successfully.'
+            echo 'Build and tests completed successfully.'
         }
 
         failure {
-            echo 'Pipeline failed. Check the stage logs for the error.'
+            echo 'Pipeline failed. Check the Console Output.'
         }
     }
 }
