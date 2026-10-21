@@ -1,4 +1,4 @@
-```groovy
+groovy
 pipeline {
     agent { label 'Jenkins-Agent' }
 
@@ -53,4 +53,3 @@ pipeline {
         }
     }
 }
-```
